@@ -1,0 +1,7 @@
+{
+  "name": "ReVistete",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
