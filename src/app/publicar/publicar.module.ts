@@ -1,25 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { IonicModule } from '@ionic/angular';
 
-import { HomePage } from './home.page';
-import { RouterModule } from '@angular/router';
+import { PublicarPageRoutingModule } from './publicar-routing.module';
+
+import { PublicarPage } from './publicar.page';
 import { ComponentsModule } from 'src/app/components/components.module'
 
 @NgModule({
-  declarations: [HomePage],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     ComponentsModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: HomePage
-      }
-    ])
-  ]
+    PublicarPageRoutingModule
+  ],
+  declarations: [PublicarPage]
 })
-export class HomePageModule {}
+export class PublicarPageModule {}

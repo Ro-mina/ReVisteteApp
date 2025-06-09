@@ -1,0 +1,55 @@
+    <ion-content [fullscreen]="true">
+      <div class="logo-container">
+        <img src="assets/img/logo.png" alt="Logo" class="logo-img" />
+      </div>
+    <ion-text class="eslogan">
+    <h2>Tu estilo, nuestra comunidad</h2>
+    </ion-text>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">   
+    <!-- Usuario -->
+    <ion-item>
+      <ion-label position="floating">Usuario</ion-label>
+      <ion-input type="text" formControlName="identificador"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="loginForm.get('identificador')?.touched && loginForm.get('identificador')?.hasError('required')">
+      Este campo es obligatorio
+    </ion-note>
+
+
+    <!-- Contraseña -->
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')">
+      La contraseña es obligatoria
+    </ion-note>
+    <ion-note color="danger" *ngIf="loginForm.get('password')?.hasError('minlength')">
+      Mínimo 6 caracteres
+    </ion-note>
+
+    <!-- Botón iniciar sesion -->
+    <ion-button class="btn-login" expand="block" type="submit" [disabled]="loginForm.invalid">
+      Iniciar sesión
+    </ion-button>
+    <!-- Botón ir al home como invitado -->
+    <ion-button class="invitado" fill="clear" color="dark" size="small" (click)="irAHome()">
+      Ir al Home como invitado
+    </ion-button>
+  </form>
+
+  <!-- Enlace a registro -->
+  <div class="register-text">
+    <ion-text>¿No tienes una cuenta?</ion-text>
+    <a href="/registro"> Regístrate</a>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="dark">
+    <ion-title size="small" class="ion-text-center">
+      Copyright © ReVístete 2025
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>

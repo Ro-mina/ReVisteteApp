@@ -1,4 +1,4 @@
-.card-prenda {
+.card-n-prenda {
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
@@ -32,18 +32,4 @@
     font-size: 1rem;
     color: #333;
   }
-}
-ion-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.botones-superiores {
-  top: 16px;
-  left: 16px;
-  display: flex;
-  gap: 8px;
-  z-index: 1000;
 }

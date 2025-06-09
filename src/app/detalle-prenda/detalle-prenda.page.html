@@ -1,0 +1,62 @@
+<!-- Encabezado de la pagina -->
+<app-header [nombreUsuario]="nombreUsuario"></app-header>
+<!-- Título de la página -->
+  <ion-text color="primary">
+    <h1 class="ion-text-center">Información sobre la prenda</h1>
+  </ion-text>
+<!-- Contenido   -->
+<ion-content class="ion-padding" *ngIf="prenda"> 
+
+  <!-- Detalles de la prenda -->
+     <ion-card class="card-prenda">    
+    <!-- Imagen -->
+      <div class="imagen-container">
+        <img [src]="prenda.imagen" alt="Imagen de la prenda" class="prenda-img" />
+      </div>
+    <ion-card-header>
+      <ion-card-title>{{ prenda.titulo }}</ion-card-title>
+      <ion-card-subtitle>{{ prenda.tipo }} - Talla {{ prenda.talla }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      
+      <p><strong>Estado:</strong> {{ prenda.estado }}</p>
+      <p><strong>Ubicación:</strong> {{ prenda.ubicacion }}</p>
+      <p><strong>Precio:</strong> ${{ prenda.precio }}</p>
+      <p><strong>Descripción:</strong> {{ prenda.descripcion }}</p>
+      <small><strong>Publicado por:</strong> {{ prenda.publicadoPor }}</small>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Comentarios -->
+  <div class="comentarios-container">
+    <h2>Si estas interesado ¡Escribe aquí!</h2>
+
+    <div *ngIf="comentarios.length > 0; else sinComentarios">
+      <div class="comentario" *ngFor="let comentario of comentarios">
+        <div class="comentario-header">
+          <strong>{{ comentario.autor }}</strong>
+          <small>{{ comentario.fecha | date:'short' }}</small>
+        </div>
+        <p>{{ comentario.texto }}</p>
+      </div>
+    </div>
+
+    <ng-template #sinComentarios>
+      <p>No hay personas interesadas aún. ¡Esta prenda puede ser tuya!</p>
+    </ng-template>
+
+    <!-- Formulario para comentar -->
+    <ion-item lines="none">
+      <ion-input [(ngModel)]="nuevoComentario" placeholder="Escribele al dueño.."></ion-input>
+    </ion-item>
+    <ion-button expand="block" (click)="agregarComentario()" class="btn-comentar">Publicar</ion-button>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="dark">
+    <ion-title size="small" class="ion-text-center">
+      Copyright © ReVístete 2025
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>
