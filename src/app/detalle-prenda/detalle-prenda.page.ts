@@ -1,90 +1,114 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Comentario } from 'src/app/detalle-prenda/models/comentario.model';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
+import { Preferences } from '@capacitor/preferences';
+import { Comentario } from '../models/comentario.model';
+import { ServiciodbService } from 'services/serviciodb.service';
+import { PrendaService } from '../services/prenda.service';
+import { ComentarioService } from '../services/comentario.service';
 
 @Component({
   selector: 'app-detalle-prenda',
   templateUrl: './detalle-prenda.page.html',
   styleUrls: ['./detalle-prenda.page.scss'],
-  standalone:false
+  standalone: false
 })
 export class DetallePrendaPage implements OnInit {
   prenda: any;
   comentarios: Comentario[] = [];
   nuevoComentario: string = '';
   nombreUsuario: string = '';
+  usuarioLogeado = false;
 
-  prendas = [
-    {
-      id: 1,
-      imagen: 'assets/img/polera1.jpeg',
-      titulo: 'Polera negra',
-      talla: 'M',
-      tipo: 'Polera',
-      estado: 'Como nueva',
-      ubicacion: 'Santiago',
-      precio: 5000,
-      descripcion: 'Polera cómoda, casi sin uso.',
-      publicadoPor: 'Admin'
-    },
-    {
-      id: 2,
-      imagen: 'assets/img/jeans1.jpeg',
-      titulo: 'Jeans celeste',
-      talla: 'L',
-      tipo: 'Pantalón',
-      estado: 'Usado',
-      ubicacion: 'Valparaíso',
-      precio: 7000,
-      descripcion: 'Jeans ajustado, muy cómodos.',
-      publicadoPor: 'Admin'
-    },
-    {
-      id: 3,
-      imagen: 'assets/img/chaqueta1.jpeg',
-      titulo: 'Chaqueta jeans',
-      talla: 'M',
-      tipo: 'Chaqueta',
-      estado: 'Usado',
-      ubicacion: 'Concepción',
-      precio: 13500,
-      descripcion: 'Chaqueta jeans estilo destroyed (desgastada) color celeste envejecido (opaco), esta impecable.',
-      publicadoPor: 'Admin'
-    },
-    {
-      id: 4,
-      imagen: 'assets/img/vestido1.jpeg',
-      titulo: 'Vestido jumper',
-      talla: 'S',
-      tipo: 'Vestido',
-      estado: 'Usado',
-      ubicacion: 'Santiago',
-      precio: 6500,
-      descripcion: 'Jumper de cotele burdeo talla s marca forever 21 tiene de largo 72 cms y de axila a axila 41 cms',
-      publicadoPor: 'Admin'
-    } 
-    
-  ];
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private menu: MenuController,
+    private dbService: ServiciodbService,
+    private prendaService: PrendaService,
+    private comentarioService: ComentarioService
 
-  constructor(private route: ActivatedRoute) {}
+  ) {}
 
-  ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('ID recibido:', id); // ← asegúrate de ver esto en consola
-    this.prenda = this.prendas.find(p => p.id === id);
-    this.nombreUsuario = localStorage.getItem('nombreUsuario') || 'Invitado';
-  }
-  agregarComentario() {
-    if (this.nuevoComentario.trim()) {
-      const comentario: Comentario = {
-        autor: this.nombreUsuario,
-        texto: this.nuevoComentario,
-        fecha: new Date()
-      };
-      this.comentarios.push(comentario);
-      this.nuevoComentario = '';
+    async ngOnInit() {
+      this.usuarioLogeado = await this.dbService.estaLogeado();  // ← espera el valor
+      console.log('¿Está logeado?:', this.usuarioLogeado);
+
+      if (!this.usuarioLogeado) {
+        console.warn(' Redirigiendo a login desde detalle-prenda');
+        this.router.navigate(['/login']);
+        return;
+      }
+
+      const id = Number(this.route.snapshot.paramMap.get('id'));
+      console.log(' ID recibido:', id);
+
+      const { value } = await Preferences.get({ key: 'nombreUsuario' });
+      this.nombreUsuario = value || 'Invitado';
+
+      this.prendaService.getPrendas().subscribe({
+        next: (prendas) => {
+          console.log(' Prendas cargadas desde API:', prendas);
+          this.prenda = prendas.find(p => p.id === id);
+          if (!this.prenda) {
+            alert('Prenda no encontrada');
+            this.router.navigate(['/home']);
+          } else {
+            this.obtenerComentarios(this.prenda.id);
+          }
+        },
+        error: () => {
+          alert('Error al cargar la prenda');
+          this.router.navigate(['/home']);
+        }
+      });
     }
+
+  obtenerComentarios(prendaId: number) {
+    this.comentarioService.obtenerComentarios(prendaId).subscribe({
+      next: (comentarios) => {
+        this.comentarios = comentarios;
+      },
+      error: () => {
+        console.warn('No se pudieron cargar los comentarios');
+        this.comentarios = [];
+      }
+    });
+  }
+
+  async agregarComentario() {
+    if (!this.nuevoComentario.trim() || !this.prenda) return;
+
+    const { value } = await Preferences.get({ key: 'nombreUsuario' });
+    const autor = value || 'Invitado';
+
+    const comentario: Comentario = {
+      autor,
+      texto: this.nuevoComentario.trim(),
+      fecha: new Date().toISOString(),
+      prenda_id: this.prenda.id
+    };
+
+
+    this.comentarioService.agregarComentario(comentario).subscribe({
+      next: (nuevoComentario) => {
+        this.comentarios.push(nuevoComentario);
+        this.nuevoComentario = '';
+      },
+      error: () => {
+        alert('No se pudo guardar el comentario');
+      }
+    });
+  }
+
+  irA(ruta: string) {
+    this.menu.close('menuLateral');
+    this.router.navigate(['/' + ruta]);
+  }
+
+  cerrarSesion() {
+    this.dbService.cerrarSesion();
+    this.menu.close('menuLateral');
+    this.router.navigate(['/login']);
   }
 }
-

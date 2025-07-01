@@ -1,0 +1,67 @@
+  <!-- Encabezado de la pagina -->
+ <app-header></app-header> 
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Mi Cuenta</ion-title>
+  </ion-toolbar>
+
+<ion-content class="ion-padding" id="main-content">
+
+  <!-- Tarjeta de perfil -->
+  <ion-card class="perfil-card">
+    <div class="avatar-container">
+      <ion-avatar class="avatar">
+        <img src="assets/img/avatar.jpg" alt="Avatar" />
+      </ion-avatar>
+      <ion-button fill="clear" size="small" class="editar-avatar" color="dark">
+        <ion-icon name="camera-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <ion-card-header>
+      <ion-card-title>{{ nombreUsuario }}</ion-card-title>
+      <ion-card-subtitle>{{ correo }}</ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <!-- Lista de opciones -->
+  <ion-list lines="none">
+    <ion-item button>
+      <ion-icon name="notifications-outline" slot="start" color="warning"></ion-icon>
+      <ion-label>Notificaciones</ion-label>
+    </ion-item>
+
+    <ion-item button (click)="editarPerfil()">
+      <ion-icon name="create-outline" slot="start" color="primary"></ion-icon>
+      <ion-label>Editar perfil</ion-label>
+    </ion-item>
+
+    <ion-item button>
+      <ion-icon name="key-outline" slot="start" color="tertiary"></ion-icon>
+      <ion-label>Cambiar contraseña</ion-label>
+    </ion-item>
+
+    <ion-item button (click)="verMisPublicaciones()">
+      <ion-icon name="shirt-outline" slot="start" color="success"></ion-icon>
+      <ion-label>Mis publicaciones</ion-label>
+    </ion-item>
+
+    <ion-item button color="medium" (click)="cerrarSesion()">
+      <ion-icon name="log-out-outline" slot="start"></ion-icon>
+      <ion-label>Cerrar sesión</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Botón flotante para futuras funciones -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger">
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="dark">
+    <ion-title size="small" class="ion-text-center">
+      Copyright © ReVístete 2025
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>

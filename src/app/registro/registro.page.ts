@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { AuthService, UsuarioRegistro } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-registro',
@@ -17,54 +19,79 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-
 export class RegistroPage implements OnInit {
-  nombreUsuario: string = ''; 
+  registerForm!: FormGroup;
 
-  registerForm = this.fb.group({
-    nombre: ['', [Validators.required, Validators.minLength(6)]],
-    apellido: ['', [Validators.required, Validators.minLength(6)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    fechaNacimiento: ['', Validators.required],
-    genero: ['', Validators.required]
-  });
-
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private toastCtrl: ToastController
+  ) {}
 
   ngOnInit() {
-    this.nombreUsuario = localStorage.getItem('nombreUsuario') || 'Invitado';
+    this.registerForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      apellidoPaterno: ['', [Validators.required, Validators.minLength(3)]],
+      apellidoMaterno: ['', [Validators.required, Validators.minLength(3)]],
+      fechaNacimiento: ['', Validators.required],
+      genero: ['', Validators.required],
+      correo: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
   }
 
   onSubmit() {
-    if (this.registerForm.valid) {
-      const nuevoUsuario = {
-        nombreUsuario: this.registerForm.value.nombre!,
-        apellido: this.registerForm.value.apellido!,
-        email: this.registerForm.value.email!,
-        password: this.registerForm.value.password!,
-        fechaNacimiento: this.registerForm.value.fechaNacimiento!,
-        genero: this.registerForm.value.genero!
-      };
-
-      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-
-      const existe = usuarios.find((u: any) =>
-        u.email === nuevoUsuario.email || u.nombreUsuario === nuevoUsuario.nombreUsuario
-      );
-
-      if (existe) {
-        alert('Ya existe un usuario con este email o nombre de usuario');
-        return;
-      }
-
-      usuarios.push(nuevoUsuario);
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
-      console.log('Usuario registrado:', nuevoUsuario);
-      this.router.navigate(['/login']);
-    } else {
+    if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
+      return;
+    }
+
+    const form = this.registerForm.value;
+    const nuevoUsuario: UsuarioRegistro = {
+      nombre: form.nombre.trim(),
+      apellido_paterno: form.apellidoPaterno.trim(),
+      apellido_materno: form.apellidoMaterno.trim(),
+      correo: form.correo.trim(),
+      contrasena: form.password.trim(),
+      genero: form.genero,
+      fecha_nacimiento: new Date(form.fechaNacimiento).toISOString().split('T')[0]
+    };
+
+    this.authService.register(nuevoUsuario).subscribe({
+      next: async () => {
+        this.registerForm.reset();
+
+        const toast = await this.toastCtrl.create({
+          message: 'Usuario registrado correctamente',
+          duration: 2000,
+          color: 'success'
+        });
+
+        await toast.present();
+
+        
+        setTimeout(() => {
+          if (this.router.url !== '/login') {
+            this.router.navigate(['/login'], { replaceUrl: true });
+          }
+        }, 2100);
+      },
+      error: async (err) => {
+        console.error('Error en el registro', err);
+        const toast = await this.toastCtrl.create({
+          message: 'No se pudo registrar. ¿El correo ya está en uso?',
+          duration: 2500,
+          color: 'danger'
+        });
+        toast.present();
+      }
+    });
+  }
+    irALogin() {
+    if (this.router.url !== '/login') {
+      this.router.navigate(['/login']);
     }
   }
+
 }

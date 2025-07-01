@@ -1,3 +1,26 @@
-<ion-app>
-  <ion-router-outlet></ion-router-outlet>
-</ion-app>
+<ion-menu side="start" menuId="menuLateral" contentId="main-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menú</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item button (click)="irA('/home')">
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-item>
+      <ion-item button (click)="irA('/publicar')">
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        <ion-label>Publicar</ion-label>
+      </ion-item>
+      <ion-item button (click)="irA('/mi-cuenta')">
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        <ion-label>Mi Cuenta</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<!-- contenido -->
+<ion-router-outlet id="main-content"></ion-router-outlet>

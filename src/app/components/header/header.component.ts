@@ -1,34 +1,50 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
+import { Preferences } from '@capacitor/preferences';
+import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  standalone: false
+  standalone: true,
+  imports: [CommonModule, IonicModule]
 })
-export class HeaderComponent implements OnInit {
-  @Input() nombreUsuario: string = 'Invitado';
-  usuarioLogeado: boolean = false;
+export class HeaderComponent {
+  @Input() nombreUsuario: string = '';
+  usuarioLogeado = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private menu: MenuController
+  ) {}
 
-  ngOnInit(): void {
-    const usuario = localStorage.getItem('nombreUsuario');
-    this.usuarioLogeado = !!usuario;
+  async ngOnInit() {
+    const { value } = await Preferences.get({ key: 'nombreUsuario' });
+    if (value) {
+      this.nombreUsuario = value;
+      this.usuarioLogeado = true;
+    }
   }
 
-  cerrarSesion() {
-    localStorage.removeItem('prendas');
-    localStorage.removeItem('nombreUsuario');
+  abrirMenuLateral() {
+    this.menu.enable(true, 'menuLateral'); 
+    this.menu.open('menuLateral');
+  }
+
+
+  async cerrarSesion() {
+    await Preferences.remove({ key: 'usuario' });
+    await Preferences.remove({ key: 'nombreUsuario' });
+    await Preferences.remove({ key: 'prendas' }); 
+    const { keys } = await Preferences.keys();
+    console.log('Claves guardadas después del logout:', keys);
+
     this.router.navigate(['/login']);
   }
-
   irALogin() {
     this.router.navigate(['/login']);
-  }
-
-  goBack() {
-    this.router.navigate(['/home']);
   }
 }

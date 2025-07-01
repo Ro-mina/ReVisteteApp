@@ -1,18 +1,19 @@
 <ion-header>
   <ion-toolbar color="dark">
-    <!-- Botón volver -->
-  <ion-buttons slot="start">
-    <ion-button fill="clear" (click)="goBack()">
-      <ion-icon name="arrow-back-circle-outline"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-    <!-- Logo a la izquierda -->
+
+    <!-- Botón menú principal solo si hay sesión -->
+    <ion-buttons slot="start" *ngIf="usuarioLogeado">
+      <ion-button fill="clear" (click)="abrirMenuLateral()">
+        <ion-icon name="menu-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <!-- Logo -->
     <ion-buttons slot="start">
       <img src="assets/img/logo.png" alt="Logo" class="logo-img" />
     </ion-buttons>
 
-    <!-- Bienvenida con nombre -->
-    <!-- Si está logeado, muestra bienvenida y cerrar sesión -->
+    <!-- Usuario logeado -->
     <ion-buttons slot="end" *ngIf="usuarioLogeado; else loginButton">
       <ion-text color="light" class="bienvenida-text">
         Bienvenido, {{ nombreUsuario }}
@@ -22,13 +23,14 @@
       </ion-button>
     </ion-buttons>
 
-    <!-- Si no está logeado, muestra botón iniciar sesión -->
+    <!-- Si NO está logeado -->
     <ng-template #loginButton>
       <ion-buttons slot="end">
         <ion-button (click)="irALogin()" fill="clear" color="light">
-        Iniciar sesión
-      </ion-button>
+          Iniciar sesión
+        </ion-button>
       </ion-buttons>
     </ng-template>
+    
   </ion-toolbar>
 </ion-header>

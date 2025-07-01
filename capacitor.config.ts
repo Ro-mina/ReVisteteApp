@@ -1,9 +1,14 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'ReVistete',
-  webDir: 'www'
+  appId: 'com.revistete.app',
+  appName: 'ReVístete',
+  webDir: 'www',
+  bundledWebRuntime: false,
+  server: {
+    androidScheme: 'http',
+    cleartext: true
+  }
 };
 
 export default config;

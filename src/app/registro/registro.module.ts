@@ -8,30 +8,28 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-
-
 import { IonicModule } from '@ionic/angular';
-
 import { RegistroPageRoutingModule } from './registro-routing.module';
-
 import { RegistroPage } from './registro.page';
-import { ComponentsModule } from 'src/app/components/components.module'
+import { HeaderComponent } from '../components/header/header.component';
+
 
 @NgModule({
+  declarations: [RegistroPage],
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     RegistroPageRoutingModule,
-    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ComponentsModule,
     MatSelectModule,
-    MatButtonModule
-  ],
-  declarations: [RegistroPage]
+    MatButtonModule,
+    HeaderComponent
+  ]
 })
 export class RegistroPageModule {}
+

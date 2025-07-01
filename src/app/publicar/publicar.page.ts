@@ -1,18 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
-interface Prenda {
-  id: number;
-  imagen: string;
-  titulo: string;
-  descripcion: string;
-  tipo: string;
-  estado: string;
-  talla: string;
-  ubicacion: string;
-  precio: number;
-  publicadoPor: string; 
-}
+import { Preferences } from '@capacitor/preferences';
+import { Prenda } from '../models/prenda.model';
+import { PrendaService } from '../services/prenda.service';
+import { UsuarioService } from '../services/usuario.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-publicar',
@@ -20,45 +13,71 @@ interface Prenda {
   styleUrls: ['./publicar.page.scss'],
   standalone: false
 })
-export class PublicarPage {
+export class PublicarPage implements OnInit {
+  publicarForm!: FormGroup;
   nombreUsuario: string = '';
-  nuevaPrenda: Prenda = {
-    id: 0,
-    imagen: '',
-    titulo: '',
-    descripcion: '',
-    tipo: '',
-    estado: '',
-    talla: '',
-    ubicacion: '',
-    precio: 0,
-    publicadoPor: '' 
-  };
+  imagenBase64: string = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private prendaService: PrendaService,
+    private usuarioService: UsuarioService
+  ) {}
 
   ngOnInit() {
     this.nombreUsuario = localStorage.getItem('nombreUsuario') || 'Invitado';
+
+    this.publicarForm = this.fb.group({
+      titulo: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      tipo: ['', Validators.required],
+      estado: ['', Validators.required],
+      talla: ['', Validators.required],
+      ubicacion: ['', Validators.required],
+      precio: [0, [Validators.required, Validators.min(100)]]
+    });
   }
 
-  publicarPrenda() {
-    const prendas = JSON.parse(localStorage.getItem('prendas') || '[]');
-    this.nuevaPrenda.id = Date.now();
-    this.nuevaPrenda.publicadoPor = this.nombreUsuario; // 
-    prendas.push(this.nuevaPrenda);
-    localStorage.setItem('prendas', JSON.stringify(prendas));
-    this.router.navigate(['/home']);
-  }
+    async tomarFoto() {
+      try {
+        const image = await Camera.getPhoto({
+          quality: 75,
+          allowEditing: false,
+          resultType: CameraResultType.DataUrl,
+          source: CameraSource.Camera
+        });
 
-  cargarImagen(event: any) {
-    const archivo = event.target.files[0];
-
-    if (archivo) {
-      const lector = new FileReader();
-      lector.onload = () => {
-        this.nuevaPrenda.imagen = lector.result as string;
-      };
-      lector.readAsDataURL(archivo);
+        this.imagenBase64 = image.dataUrl!;
+      } catch (err) {
+        console.error('Cámara cancelada o fallida');
+      }
     }
+
+
+  async publicarPrenda() {
+    if (this.publicarForm.invalid || !this.imagenBase64) return;
+
+    const usuario = await this.usuarioService.obtenerUsuario();
+
+    const nuevaPrenda: Omit<Prenda, 'id'> = {
+      ...this.publicarForm.value,
+      imagen: this.imagenBase64,
+      publicadoPor: usuario?.nombre || 'Invitado',
+      usuario_id: usuario?.id
+    };
+
+    this.prendaService.publicarPrenda(nuevaPrenda).subscribe({
+      next: async () => {
+        // Guardar localmente para mostrar en modo offline
+        const { value } = await Preferences.get({ key: 'prendas' });
+        const prendasLocales = value ? JSON.parse(value) : [];
+        prendasLocales.push(nuevaPrenda);
+        await Preferences.set({ key: 'prendas', value: JSON.stringify(prendasLocales) });
+
+        this.router.navigate(['/home']);
+      },
+      error: () => alert('Error al publicar')
+    });
   }
 }

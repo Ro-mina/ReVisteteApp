@@ -47,3 +47,30 @@ ion-card img {
   gap: 8px;
   z-index: 1000;
 }
+
+.menu-grid {
+  background: #f8f8f8;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px; // separa visualmente el contenido
+
+  .menu-col {
+    text-align: center;
+
+    .menu-icon {
+      font-size: 24px;
+      color: var(--ion-color-primary);
+    }
+
+    .menu-text {
+      font-size: 13px;
+      color: #333;
+    }
+
+    &:active {
+      background-color: #e0e0e0;
+      border-radius: 8px;
+    }
+  }
+}
+

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
+import { AuthGuard } from '../guards/auth.guard';
 import { DetallePrendaPage } from './detalle-prenda.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: DetallePrendaPage
+    component: DetallePrendaPage,
+    canActivate: [AuthGuard]
   }
 ];
 

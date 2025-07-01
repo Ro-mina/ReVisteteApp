@@ -1,51 +1,5 @@
-  <!-- Encabezado de la pagina -->
-<app-header [nombreUsuario]="nombreUsuario"></app-header>
-
-  <!-- Título de la página -->
-  <ion-text color="primary">
-    <h1 class="ion-text-center">Explora las últimas prendas</h1>
-  </ion-text>
-  <!-- Contenido   -->
-  <ion-content class="ion-padding" id="main-content" [@slideInAnimation]>
-  <!-- Botónes para abrir el menú de filtros y publicar -->
-  <div class="botones-superiores">
-  <ion-button size="small" fill="solid" color="medium" (click)="abrirMenu()">
-    <ion-icon name="funnel-outline" slot="start"></ion-icon>
-    Filtrar
-  </ion-button>
-
-  <ion-button size="small" fill="solid" color="medium" (click)="irAPublicar()">
-    <ion-icon name="add-circle-outline" slot="start"></ion-icon>
-    Publicar
-  </ion-button>
-</div>
-
-  <!-- Lista de prendas filtradas -->
-  <ion-list *ngIf="prendasFiltradas.length > 0; else sinResultados">
-    <ion-card class="card-prenda" *ngFor="let prenda of prendasFiltradas" (click)="verDetalle(prenda.id)" button>
-      <img [src]="prenda.imagen" />
-      <ion-card-header>
-        <ion-card-title>{{ prenda.titulo }}</ion-card-title>
-        <ion-card-subtitle>{{ prenda.tipo }} - Talla {{ prenda.talla }}</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>        
-        Estado: {{ prenda.estado }} <br />
-        Ubicación: {{ prenda.ubicacion }} <br />
-        Precio: ${{ prenda.precio }} <br />
-      <small><strong>Publicado por:</strong> {{ prenda.publicadoPor }}</small>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
-
-  <ng-template #sinResultados>
-    <ion-text color="medium">
-      <p class="ion-text-center">No se encontraron prendas con esos filtros.</p>
-    </ion-text>
-  </ng-template>
-</ion-content>
-
 <!-- Menú lateral de filtros -->
-<ion-menu side="start" menuId="filtrosMenu" contentId="main-content">
+<ion-menu menuId="menu-filtros" side="start" contentId="contenidoHome">
   <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Filtrar Prendas</ion-title>
@@ -57,10 +11,11 @@
     </ion-toolbar>
   </ion-header>
   <ion-content>
+    <!-- Formulario de filtros -->
     <ion-list lines="full">
       <ion-item>
         <ion-label>Talla</ion-label>
-        <ion-select [(ngModel)]="filtros.talla">
+        <ion-select [(ngModel)]="filtros.talla" (ionChange)="aplicarFiltros()">
           <ion-select-option value="">Todas</ion-select-option>
           <ion-select-option value="S">S</ion-select-option>
           <ion-select-option value="M">M</ion-select-option>
@@ -71,7 +26,7 @@
 
       <ion-item>
         <ion-label>Tipo</ion-label>
-        <ion-select [(ngModel)]="filtros.tipo">
+        <ion-select [(ngModel)]="filtros.tipo" (ionChange)="aplicarFiltros()">
           <ion-select-option value="">Todos</ion-select-option>
           <ion-select-option value="Polera">Polera</ion-select-option>
           <ion-select-option value="Pantalón">Pantalón</ion-select-option>
@@ -82,7 +37,7 @@
 
       <ion-item>
         <ion-label>Estado</ion-label>
-        <ion-select [(ngModel)]="filtros.estado">
+        <ion-select [(ngModel)]="filtros.estado" (ionChange)="aplicarFiltros()">
           <ion-select-option value="">Todos</ion-select-option>
           <ion-select-option value="Nuevo">Nuevo</ion-select-option>
           <ion-select-option value="Como nueva">Como nueva</ion-select-option>
@@ -92,7 +47,7 @@
 
       <ion-item>
         <ion-label>Ubicación</ion-label>
-        <ion-select [(ngModel)]="filtros.ubicacion">
+        <ion-select [(ngModel)]="filtros.ubicacion" (ionChange)="aplicarFiltros()">
           <ion-select-option value="">Todas</ion-select-option>
           <ion-select-option value="Santiago">Santiago</ion-select-option>
           <ion-select-option value="Valparaíso">Valparaíso</ion-select-option>
@@ -107,6 +62,53 @@
   </ion-content>
 </ion-menu>
 
+<!-- Header -->
+<app-header></app-header>
+
+<!-- Contenido principal -->
+<ion-content id="contenidoHome" class="ion-padding">
+  <ion-text color="primary">
+    <h1 class="ion-text-center">Explora las últimas prendas</h1>
+  </ion-text>
+
+  <!-- Botones superiores -->
+  <div class="botones-superiores">
+    <ion-button size="small" fill="solid" color="medium" (click)="abrirMenu()">
+      <ion-icon name="funnel-outline" slot="start"></ion-icon>
+      Filtrar
+    </ion-button>
+    <ion-button size="small" fill="solid" color="medium" (click)="irAPublicar()">
+      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+      Publicar
+    </ion-button>
+  </div>
+
+  <!-- Lista de prendas -->
+  <ion-list *ngIf="prendasFiltradas.length > 0; else sinResultados">
+    <ion-card class="card-prenda" *ngFor="let prenda of prendasFiltradas" (click)="verDetalle(prenda.id!)" button>
+      <img [src]="prenda.imagen" />
+      <ion-card-header>
+        <ion-card-title>{{ prenda.titulo }}</ion-card-title>
+        <ion-card-subtitle>{{ prenda.tipo }} - Talla {{ prenda.talla }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        Estado: {{ prenda.estado }} <br />
+        Ubicación: {{ prenda.ubicacion }} <br />
+        Precio: ${{ prenda.precio }} <br />
+        <small><strong>Publicado por:</strong> {{ prenda.publicadoPor }}</small>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <!-- Sin resultados -->
+  <ng-template #sinResultados>
+    <ion-text color="medium">
+      <p class="ion-text-center">No se encontraron prendas con esos filtros.</p>
+    </ion-text>
+  </ng-template>
+</ion-content>
+
+<!-- Footer -->
 <ion-footer>
   <ion-toolbar color="dark">
     <ion-title size="small" class="ion-text-center">

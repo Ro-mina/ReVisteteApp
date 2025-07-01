@@ -1,40 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
-import { trigger, transition, style, animate } from '@angular/animations';
-
-
-interface Prenda {
-  id: number;
-  imagen: string;
-  titulo: string;
-  talla: string;
-  tipo: string;
-  estado: string;
-  ubicacion: string;
-  precio: number;
-  publicadoPor: string;
-}
+import { MenuController, ToastController } from '@ionic/angular';
+import { PrendaService } from '../services/prenda.service';
+import { Preferences } from '@capacitor/preferences';
+import { NetworkService } from '../services/network.service';
+import { Prenda } from '../models/prenda.model';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  standalone: false,
-  animations: [
-    trigger('slideInAnimation', [
-      transition(':enter', [
-        style({ transform: 'translateY(100%)', opacity: 0 }),
-        animate('500ms ease-out', style({ transform: 'translateY(0)', opacity: 1 }))
-      ])
-    ])
-  ]
+  standalone: false
 })
-
 export class HomePage implements OnInit {
   nombreUsuario: string = '';
-
   prendas: Prenda[] = [];
+  prendasFiltradas: Prenda[] = [];
 
   filtros = {
     talla: '',
@@ -43,94 +24,63 @@ export class HomePage implements OnInit {
     ubicacion: ''
   };
 
-  constructor(private router: Router, private menu: MenuController) {}
+  constructor(
+    private router: Router,
+    public menu: MenuController,
+    private prendaService: PrendaService,
+    private networkService: NetworkService,
+    private toastCtrl: ToastController
+  ) {}
 
-  ngOnInit() {
-    this.nombreUsuario = localStorage.getItem('nombreUsuario') || 'Invitado';
+  async ngOnInit() {
+    const usuario = await Preferences.get({ key: 'usuario' });
+    this.nombreUsuario = usuario.value ? JSON.parse(usuario.value).nombre : 'Invitado';    
   }
 
-  ionViewWillEnter() {
-    const usuario = this.nombreUsuario || 'Invitado';
-    const publicadas = (JSON.parse(localStorage.getItem('prendas') || '[]') as Prenda[]).map(p => ({
-      ...p,
-      publicadoPor: p.publicadoPor || usuario
-    }));
+  async ionViewWillEnter() {
+    const conectado = await this.networkService.hayInternet();
 
-    this.prendas = [
-      {
-        id: 1,
-        imagen: 'assets/img/polera1.jpeg',
-        titulo: 'Polera negra',
-        talla: 'M',
-        tipo: 'Polera',
-        estado: 'Como nueva',
-        ubicacion: 'Santiago',
-        precio: 5000,
-        publicadoPor: 'Admin'
-      },
-      {
-        id: 2,
-        imagen: 'assets/img/jeans1.jpeg',
-        titulo: 'Jeans celeste',
-        talla: 'L',
-        tipo: 'Pantalón',
-        estado: 'Usado',
-        ubicacion: 'Valparaíso',
-        precio: 7000,
-        publicadoPor: 'Admin'
-      },
-      {
-        id: 3,
-        imagen: 'assets/img/chaqueta1.jpeg',
-        titulo: 'Chaqueta jeans',
-        talla: 'M',
-        tipo: 'Chaqueta',
-        estado: 'Usado',
-        ubicacion: 'Concepción',
-        precio: 13500,
-        publicadoPor: 'Admin'
-      },
-      {
-        id: 4,
-        imagen: 'assets/img/vestido1.jpeg',
-        titulo: 'Vestido jumper',
-        talla: 'S',
-        tipo: 'Vestido',
-        estado: 'Usado',
-        ubicacion: 'Santiago',
-        precio: 6500,
-        publicadoPor: 'Admin'
-      },
-      ...publicadas
-    ];
+    if (conectado) {
+      this.prendaService.getPrendas().subscribe({
+        next: async (datos) => {
+          this.prendas = datos;
+          this.prendasFiltradas = [...datos]; // 
+          await Preferences.set({ key: 'prendas', value: JSON.stringify(datos) });
+          console.log(' Prendas cargadas desde API:', datos);
+        },
+
+        error: async () => {
+          await this.mostrarToast('No se pudieron cargar las prendas desde la API.');
+          await this.cargarPrendasDesdeLocal();
+        }
+      });
+    } else {
+      await this.mostrarToast('Sin conexión. Mostrando prendas guardadas.');
+      await this.cargarPrendasDesdeLocal();
+    }
   }
 
-  get prendasFiltradas() {
-    return this.prendas.filter(p =>
+  private async cargarPrendasDesdeLocal() {
+    const { value } = await Preferences.get({ key: 'prendas' });
+    this.prendas = value ? JSON.parse(value) : [];
+    this.prendasFiltradas = [...this.prendas];
+    console.log(' Prendas cargadas localmente:', this.prendas);
+  }
+
+
+  aplicarFiltros() {
+    this.prendasFiltradas = this.prendas.filter(p =>
       (!this.filtros.talla || p.talla === this.filtros.talla) &&
       (!this.filtros.tipo || p.tipo === this.filtros.tipo) &&
       (!this.filtros.estado || p.estado === this.filtros.estado) &&
       (!this.filtros.ubicacion || p.ubicacion === this.filtros.ubicacion)
     );
-  }
 
-  verDetalle(id: number) {
-    this.router.navigate(['/detalle-prenda', id]);
-  }
-
-  cerrarSesion() {
-    localStorage.removeItem('prendas');
-    localStorage.removeItem('nombreUsuario');
-    this.router.navigate(['/login']);
-  }
-
-  abrirMenu() {
-    this.menu.open('filtrosMenu');
-  }
-
-  cerrarMenu() {
+    console.log('Filtros activos:', this.filtros);
+    console.log('Resultados:', this.prendasFiltradas);
     this.menu.close('filtrosMenu');
   }
+
 
   limpiarFiltros() {
     this.filtros = {
@@ -139,7 +89,31 @@ export class HomePage implements OnInit {
       estado: '',
       ubicacion: ''
     };
+    this.prendasFiltradas = [...this.prendas];
     this.menu.close('filtrosMenu');
+  }
+
+  abrirMenu() {
+    this.menu.open('menu-filtros');
+  }
+
+  cerrarMenu() {
+    this.menu.close('menu-filtros');
+  }
+
+  async verDetalle(id: number) {
+    const { value } = await Preferences.get({ key: 'usuario' });
+    console.log('Usuario guardado antes de navegar:', value);
+    this.router.navigate(['/detalle-prenda', id]);
+  }
+
+  async mostrarToast(mensaje: string) {
+    const toast = await this.toastCtrl.create({
+      message: mensaje,
+      duration: 3000,
+      color: 'warning'
+    });
+    await toast.present();
   }
 
   irAPublicar() {

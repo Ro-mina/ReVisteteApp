@@ -1,5 +1,6 @@
 export interface Comentario {
   autor: string;
   texto: string;
-  fecha: Date;
+  fecha: string; 
+  prenda_id: number;
 }

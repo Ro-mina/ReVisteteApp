@@ -41,3 +41,12 @@
 .invitado {
   font-weight: bold;
 }
+.littie-wrapper {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 30px; 
+  width: 95%;
+  z-index: 10;
+  pointer-events: none;
+}

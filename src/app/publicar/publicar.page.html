@@ -1,5 +1,4 @@
-  <!-- Encabezado -->
-<app-header [nombreUsuario]="nombreUsuario"></app-header>  
+<app-header></app-header>
 
 <ion-content class="ion-padding">
   <ion-card class="card-n-prenda">
@@ -8,83 +7,83 @@
     </ion-card-header>
     <ion-card-content>
 
-   
-      <!-- Cargar Imagen -->
-      <ion-item>
-        <ion-label>Foto</ion-label>
-        <input type="file" (change)="cargarImagen($event)" accept="image/*" />
-      </ion-item>
+      <form [formGroup]="publicarForm" (ngSubmit)="publicarPrenda()">
+        <!-- Tomar foto -->
+        <ion-item>
+          <ion-button expand="block" (click)="tomarFoto()">
+            Tomar Foto
+          </ion-button>
+        </ion-item>
+        <ion-item *ngIf="imagenBase64">
+          <ion-img [src]="imagenBase64"></ion-img>
+        </ion-item>
 
-      <!-- Mostrar vista previa si existe -->
-      <ion-item *ngIf="nuevaPrenda.imagen">
-        <ion-img [src]="nuevaPrenda.imagen"></ion-img>
-      </ion-item>
 
+        <!-- Título -->
+        <ion-item>
+          <ion-label position="floating">Título</ion-label>
+          <ion-input formControlName="titulo" type="text"></ion-input>
+        </ion-item>
 
-      <!-- Título -->
-      <ion-item>
-        <ion-label position="floating">Título</ion-label>
-        <ion-input [(ngModel)]="nuevaPrenda.titulo" type="text"></ion-input>
-      </ion-item>
+        <!-- Descripción -->
+        <ion-item>
+          <ion-label position="floating">Descripción</ion-label>
+          <ion-textarea formControlName="descripcion"></ion-textarea>
+        </ion-item>
 
-      <!-- Descripción -->
-      <ion-item>
-        <ion-label position="floating">Descripción</ion-label>
-        <ion-textarea [(ngModel)]="nuevaPrenda.descripcion"></ion-textarea>
-      </ion-item>
+        <!-- Tipo -->
+        <ion-item>
+          <ion-label>Tipo</ion-label>
+          <ion-select formControlName="tipo">
+            <ion-select-option value="Polera">Polera</ion-select-option>
+            <ion-select-option value="Pantalón">Pantalón</ion-select-option>
+            <ion-select-option value="Vestido">Vestido</ion-select-option>
+            <ion-select-option value="Chaqueta">Chaqueta</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-      <!-- Categoría -->
-      <ion-item>
-        <ion-label>Categoría</ion-label>
-        <ion-select [(ngModel)]="nuevaPrenda.tipo">
-          <ion-select-option value="Polera">Polera</ion-select-option>
-          <ion-select-option value="Pantalón">Pantalón</ion-select-option>
-          <ion-select-option value="Vestido">Vestido</ion-select-option>
-          <ion-select-option value="Chaqueta">Chaqueta</ion-select-option>
-        </ion-select>
-      </ion-item>
+        <!-- Estado -->
+        <ion-item>
+          <ion-label>Estado</ion-label>
+          <ion-select formControlName="estado">
+            <ion-select-option value="Nuevo">Nuevo</ion-select-option>
+            <ion-select-option value="Como nueva">Como nueva</ion-select-option>
+            <ion-select-option value="Usado">Usado</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-      <!-- Estado -->
-      <ion-item>
-        <ion-label>Estado</ion-label>
-        <ion-select [(ngModel)]="nuevaPrenda.estado">
-          <ion-select-option value="Nuevo">Nuevo</ion-select-option>
-          <ion-select-option value="Como nueva">Como nueva</ion-select-option>
-          <ion-select-option value="Usado">Usado</ion-select-option>
-        </ion-select>
-      </ion-item>
+        <!-- Talla -->
+        <ion-item>
+          <ion-label>Talla</ion-label>
+          <ion-select formControlName="talla">
+            <ion-select-option value="S">S</ion-select-option>
+            <ion-select-option value="M">M</ion-select-option>
+            <ion-select-option value="L">L</ion-select-option>
+            <ion-select-option value="XL">XL</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-      <!-- Talla -->
-      <ion-item>
-        <ion-label>Talla</ion-label>
-        <ion-select [(ngModel)]="nuevaPrenda.talla">
-          <ion-select-option value="S">S</ion-select-option>
-          <ion-select-option value="M">M</ion-select-option>
-          <ion-select-option value="L">L</ion-select-option>
-          <ion-select-option value="XL">XL</ion-select-option>
-        </ion-select>
-      </ion-item>
+        <!-- Ubicación -->
+        <ion-item>
+          <ion-label>Ubicación</ion-label>
+          <ion-select formControlName="ubicacion">
+            <ion-select-option value="Santiago">Santiago</ion-select-option>
+            <ion-select-option value="Valparaíso">Valparaíso</ion-select-option>
+            <ion-select-option value="Concepción">Concepción</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-      <!-- Ubicación -->
-      <ion-item>
-        <ion-label>Ubicación</ion-label>
-        <ion-select [(ngModel)]="nuevaPrenda.ubicacion">
-          <ion-select-option value="Santiago">Santiago</ion-select-option>
-          <ion-select-option value="Valparaíso">Valparaíso</ion-select-option>
-          <ion-select-option value="Concepción">Concepción</ion-select-option>
-        </ion-select>
-      </ion-item>
+        <!-- Precio -->
+        <ion-item>
+          <ion-label position="floating">Precio</ion-label>
+          <ion-input formControlName="precio" type="number"></ion-input>
+        </ion-item>
 
-      <!-- Precio -->
-      <ion-item>
-        <ion-label position="floating">Precio</ion-label>
-        <ion-input [(ngModel)]="nuevaPrenda.precio" type="number"></ion-input>
-      </ion-item>
-
-      <!-- Botón -->
-      <ion-button expand="block" class="ion-margin-top" (click)="publicarPrenda()">
-        Publicar Prenda
-      </ion-button>
+        <!-- Botón -->
+        <ion-button expand="block" type="submit" class="ion-margin-top">
+          Publicar Prenda
+        </ion-button>
+      </form>
 
     </ion-card-content>
   </ion-card>
