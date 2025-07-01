@@ -1,54 +1,69 @@
-📱 ReVístete App
-ReVístete es una aplicación móvil híbrida desarrollada en Ionic y Angular, enfocada en la economía circular, que facilita la compra, venta e intercambio de prendas usadas en excelente estado. Su objetivo principal es fomentar la moda sustentable mediante una plataforma amigable y fácil de usar.
+📱 ReVístete App – Versión 2.0
+
+ReVístete es una aplicación móvil híbrida desarrollada en Ionic y Angular, enfocada en la economía circular, que facilita la compra, venta e intercambio de prendas usadas en excelente estado. Su objetivo es fomentar la moda sustentable mediante una plataforma funcional, accesible y segura.
+
+---
 
 🚩 Problemática detectada
-Muchas personas tienen ropa en buen estado que ya no utilizan, mientras otras buscan alternativas económicas y sostenibles para renovar su guardarropa. Actualmente, no todas cuentan con una plataforma segura, accesible y fácil para resolver esta necesidad.
+
+Muchas personas tienen ropa en buen estado que ya no utilizan, mientras otras buscan alternativas económicas y sostenibles para renovar su guardarropa. Actualmente, no todas cuentan con una plataforma confiable, accesible y fácil para resolver esta necesidad.
+
+---
 
 💡 Solución propuesta
-La aplicación móvil híbrida ReVístete conecta usuarios de manera eficiente, permitiéndoles publicar, buscar y adquirir prendas en buen estado mediante un sistema amigable y atractivo visualmente.
 
-✨ Ventajas:
-Plataforma intuitiva y segura.
+La aplicación móvil ReVístete conecta a los usuarios de forma eficiente, permitiéndoles publicar, buscar y adquirir prendas en buen estado. Esta nueva versión mejora significativamente la seguridad, la experiencia de uso, y la capacidad de funcionar sin conexión.
 
-Promueve el consumo consciente y sostenible.
+---
 
-Facilita la interacción entre usuarios interesados en moda sustentable.
+✨ Ventajas de la versión 2.0:
 
-Diseño atractivo y fácil navegación.
+- Plataforma intuitiva, con navegación protegida mediante Route Guards.
+- Funciona offline gracias a persistencia de datos con SQLite.
+- Promueve el consumo consciente y sostenible.
+- Permite subir fotos desde la cámara del dispositivo (Capacitor Camera).
+- Diseño atractivo, validaciones visuales y animaciones que enriquecen la experiencia.
 
-⚠️ Desventajas:
-Requiere de una comunidad activa para funcionar eficientemente.
+⚠️ Desafíos:
 
-Necesita moderación constante para asegurar la calidad y seguridad del contenido.
+- Requiere una comunidad activa para mantener contenido actualizado.
+- Necesita moderación continua para asegurar la calidad del contenido.
+
+---
 
 🎨 Interfaces y componentes utilizados
-Ionic Framework: ion-card, ion-button, ion-select, ion-menu, etc.
 
-Angular Material: Formularios (mat-form-field, mat-datepicker, mat-select).
+- **Ionic Framework:** `ion-card`, `ion-button`, `ion-select`, `ion-menu`, `ion-header`, `ion-footer`.
+- **Angular Material:** Formularios con `mat-form-field`, `mat-select`, `mat-datepicker`.
+- **Reactive Forms:** Validaciones robustas y control avanzado de formularios.
+- **Plugins:** `@capacitor/camera`, `@capacitor/preferences`, `SQLite`, `ngx-sqlite-porter`.
 
-Reactive Forms: Validación avanzada y robusta de formularios.
+---
 
 ⚙️ Funciones principales desarrolladas
-Autenticación segura: Registro e inicio de sesión con validaciones avanzadas.
 
-Publicación de prendas: Publicar fácilmente prendas usadas con fotos y detalles precisos.
+- 🔐 **Autenticación persistente:** Registro e inicio de sesión conectados a API REST (FastAPI), con almacenamiento local del usuario.
+- 🧥 **Publicación de prendas con cámara:** Toma directa de fotos con el celular y publicación inmediata.
+- 🔍 **Filtros dinámicos:** Por tipo de prenda, estado, talla y ubicación.
+- 💬 **Sistema de comentarios:** Vinculados a cada prenda, con persistencia y sincronización.
+- 🔄 **Visualización offline:** Si no hay conexión, la app muestra los datos guardados previamente con SQLite.
+- ⚠️ **Manejo de errores HTTP:** Incluyendo fallback en errores como 404 o pérdida de red.
+- 🎯 **Navegación optimizada:** Rutas protegidas, fluidez en la experiencia y estructura modular.
 
-Filtros avanzados: Búsqueda por categoría, talla, ubicación y estado.
-
-Comentarios integrados: Usuarios interesados pueden dejar comentarios fácilmente en cada publicación.
-
-Navegación sencilla: Con una interfaz intuitiva y animaciones amigables que mejoran la experiencia.
-
-
+---
 
 🛠️ Desarrollado con
-Ionic Framework
-Angular
-Angular Material
-TypeScript
-HTML & SCSS
 
-✏️ Autor
-[Ro-mina]
+- Ionic Framework  
+- Angular  
+- Angular Material  
+- TypeScript  
+- SQLite  
+- FastAPI (Backend)  
+- HTML & SCSS  
+
+---
+
+✏️ Autor  
+[Ro-mina]  
 ¡Gracias por visitar mi proyecto! ✨
-
