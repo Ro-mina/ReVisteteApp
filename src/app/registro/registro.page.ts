@@ -5,6 +5,7 @@ import { AuthService, UsuarioRegistro } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 
+
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.page.html',
@@ -60,22 +61,14 @@ export class RegistroPage implements OnInit {
 
     this.authService.register(nuevoUsuario).subscribe({
       next: async () => {
-        this.registerForm.reset();
-
         const toast = await this.toastCtrl.create({
           message: 'Usuario registrado correctamente',
           duration: 2000,
-          color: 'success'
+          color: 'danger'
         });
 
         await toast.present();
-
-        
-        setTimeout(() => {
-          if (this.router.url !== '/login') {
-            this.router.navigate(['/login'], { replaceUrl: true });
-          }
-        }, 2100);
+        this.router.navigate(['/login'], { replaceUrl: true });
       },
       error: async (err) => {
         console.error('Error en el registro', err);

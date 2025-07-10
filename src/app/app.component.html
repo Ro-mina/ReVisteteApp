@@ -4,22 +4,29 @@
       <ion-title>Menú</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content>
+  <ion-content fullscreen="false" class="menu-content" [scrollY]="false">
+  <div class="menu-wrapper">
     <ion-list>
-      <ion-item button (click)="irA('/home')">
+      <ion-item button class="menu-item-1" (click)="irA('/home')">
         <ion-icon slot="start" name="home-outline"></ion-icon>
         <ion-label>Inicio</ion-label>
       </ion-item>
-      <ion-item button (click)="irA('/publicar')">
-        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
-        <ion-label>Publicar</ion-label>
-      </ion-item>
-      <ion-item button (click)="irA('/mi-cuenta')">
+
+      <ion-item button class="menu-item-2" (click)="irA('/mi-cuenta')">
         <ion-icon slot="start" name="person-outline"></ion-icon>
         <ion-label>Mi Cuenta</ion-label>
       </ion-item>
     </ion-list>
-  </ion-content>
+
+    <!-- Botón cerrar sesión abajo -->
+    <div class="cerrar-sesion">
+      <ion-item button (click)="cerrarSesion()">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        <ion-label>Cerrar sesión</ion-label>
+      </ion-item>
+    </div>
+  </div>
+</ion-content>
 </ion-menu>
 
 <!-- contenido -->

@@ -12,7 +12,7 @@ import { IonicModule } from '@ionic/angular';
 import { RegistroPageRoutingModule } from './registro-routing.module';
 import { RegistroPage } from './registro.page';
 import { HeaderComponent } from '../components/header/header.component';
-
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [RegistroPage],
@@ -28,7 +28,8 @@ import { HeaderComponent } from '../components/header/header.component';
     MatNativeDateModule,
     MatSelectModule,
     MatButtonModule,
-    HeaderComponent
+    HeaderComponent,
+    MatRadioModule
   ]
 })
 export class RegistroPageModule {}

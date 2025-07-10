@@ -8,8 +8,9 @@
   ion-card-header {
     border-left: 2px solid #a3b5fd;
     border-right: 2px solid #a3b5fd;
-    border-top: 2px solid #a3b5fd;      
+    border-top: 2px solid #a3b5fd;
     border-radius: 12px 12px 0px 0px;
+    padding: 10px;
   }
 
   ion-card-title {
@@ -18,7 +19,7 @@
     color: #e49aab;
   }
 
-  ion-card-subtitle {    
+  ion-card-subtitle {
     margin-top: 10px;
     font-size: 1rem;
     color: #666;
@@ -31,55 +32,109 @@
     border-radius: 0px 0px 12px 12px;
     font-size: 1rem;
     color: #333;
+    padding: 12px;
   }
 }
 
 .imagen-container {
-  height:375px; 
+  height: 375px;
   width: auto;
   display: flex;
   justify-content: center;
   margin-bottom: 16px;
 }
 
-.prenda-img {    
+.prenda-img {
   width: 100%;
   max-height: 370px;
   object-fit: cover;
-  border-radius: 12px 12px 12px 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .comentarios-container {
+  margin-top: 20px;
   padding: 16px;
-  background: #c3c5f8;
-  border-radius: 12px;
-  margin-top: 16px;
-}
+  background-color: #e0e2ff; 
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 
-.comentarios-container h2 {
-  font-size: 1.4em;
-  margin-bottom: 10px;
-  color: white;
-}
+  h2 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #444;
+    text-align: center;
+  }
 
-.comentario {
-  background: #fff;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+  .comentario {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
 
-.comentario-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 4px;
-  font-size: 0.9em;
-  color: #555;
-}
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
 
-.btn-comentar {
-  margin-top: 10px;
-  --background: #b3eef6;
-  --color: #fff;
+  .comentario-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 4px;
+  }
+
+  .comentario-texto {
+    font-size: 1rem;
+    color: #222;
+    margin: 0;
+  }
+
+  .sin-comentarios {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #555;
+    text-align: center;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+  }
+
+  .form-comentario {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .input-comentario {
+    --border-radius: 12px;
+    --padding-start: 14px;
+    --padding-end: 14px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    --background: #ffffff;
+    --color: #333;
+    font-size: 0.95rem;
+    border: 1px solid #bbb;
+    min-height: 80px;
+  }
+
+  .btn-comentar {
+    border-radius: 12px;
+    background-color: #b3eef6;
+    color: #1a1a1a;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #9ddae4;
+    }
+  }
 }

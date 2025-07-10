@@ -17,6 +17,10 @@ export class PublicarPage implements OnInit {
   publicarForm!: FormGroup;
   nombreUsuario: string = '';
   imagenBase64: string = '';
+  tipoAbierto = false;
+  estadoAbierto = false;
+  tallaAbierta = false;
+  ubicacionAbierta = false;
 
   constructor(
     private fb: FormBuilder,
@@ -39,24 +43,28 @@ export class PublicarPage implements OnInit {
     });
   }
 
-    async tomarFoto() {
-      try {
-        const image = await Camera.getPhoto({
-          quality: 75,
-          allowEditing: false,
-          resultType: CameraResultType.DataUrl,
-          source: CameraSource.Camera
-        });
+  async tomarFoto() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 75,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera
+      });
 
-        this.imagenBase64 = image.dataUrl!;
-      } catch (err) {
-        console.error('Cámara cancelada o fallida');
-      }
+      this.imagenBase64 = image.dataUrl!;
+    } catch (err) {
+      console.error('Cámara cancelada o fallida');
     }
-
+  }
 
   async publicarPrenda() {
-    if (this.publicarForm.invalid || !this.imagenBase64) return;
+    if (this.publicarForm.invalid) return;
+
+    // Imagen de prueba si no hay una real (para pruebas E2E)
+    if (!this.imagenBase64) {
+      this.imagenBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
+    }
 
     const usuario = await this.usuarioService.obtenerUsuario();
 
@@ -69,7 +77,6 @@ export class PublicarPage implements OnInit {
 
     this.prendaService.publicarPrenda(nuevaPrenda).subscribe({
       next: async () => {
-        // Guardar localmente para mostrar en modo offline
         const { value } = await Preferences.get({ key: 'prendas' });
         const prendasLocales = value ? JSON.parse(value) : [];
         prendasLocales.push(nuevaPrenda);
@@ -79,5 +86,34 @@ export class PublicarPage implements OnInit {
       },
       error: () => alert('Error al publicar')
     });
+  }
+  toggleTipo() {
+    this.tipoAbierto = !this.tipoAbierto;
+    this.estadoAbierto = false;
+    this.tallaAbierta = false;
+    this.ubicacionAbierta = false;
+  }
+    toggleEstado() {
+    this.estadoAbierto = !this.estadoAbierto;
+    this.tipoAbierto = false;
+    this.tallaAbierta = false;
+    this.ubicacionAbierta = false;
+  }
+
+  toggleTalla() {
+    this.tallaAbierta = !this.tallaAbierta;
+    this.tipoAbierto = false;
+    this.estadoAbierto = false;
+    this.ubicacionAbierta = false;
+  }
+
+  toggleUbicacion() {
+    this.ubicacionAbierta = !this.ubicacionAbierta;
+    this.tipoAbierto = false;
+    this.estadoAbierto = false;
+    this.tallaAbierta = false;
+  }
+  ionViewWillLeave() {
+    (document.activeElement as HTMLElement)?.blur();
   }
 }

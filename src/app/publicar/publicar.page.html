@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<ion-content class="ion-padding">
+<ion-content fullscreen="false" class="ion-padding">
   <ion-card class="card-n-prenda">
     <ion-card-header>
       <ion-card-title>Nueva Prenda</ion-card-title>
@@ -9,7 +9,8 @@
 
       <form [formGroup]="publicarForm" (ngSubmit)="publicarPrenda()">
         <!-- Tomar foto -->
-        <ion-item>
+        <ion-item>    
+          <ion-label >Imagen</ion-label>      
           <ion-button expand="block" (click)="tomarFoto()">
             Tomar Foto
           </ion-button>
@@ -17,7 +18,6 @@
         <ion-item *ngIf="imagenBase64">
           <ion-img [src]="imagenBase64"></ion-img>
         </ion-item>
-
 
         <!-- Título -->
         <ion-item>
@@ -31,47 +31,95 @@
           <ion-textarea formControlName="descripcion"></ion-textarea>
         </ion-item>
 
-        <!-- Tipo -->
-        <ion-item>
-          <ion-label>Tipo</ion-label>
-          <ion-select formControlName="tipo">
-            <ion-select-option value="Polera">Polera</ion-select-option>
-            <ion-select-option value="Pantalón">Pantalón</ion-select-option>
-            <ion-select-option value="Vestido">Vestido</ion-select-option>
-            <ion-select-option value="Chaqueta">Chaqueta</ion-select-option>
-          </ion-select>
+        <!-- Tipo -->   
+        <ion-item class="select-fake" lines="full">
+          <ion-label position="stacked">Tipo</ion-label>
+          <div class="select-box" (click)="toggleTipo()">
+            <div class="selected-option">
+              {{ publicarForm.value.tipo || 'Seleccionar tipo' }}
+              <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+          </div>
         </ion-item>
+        <div *ngIf="tipoAbierto" class="options-box-wrapper">
+          <div class="options-box">
+            <div *ngFor="let tipo of ['Polera', 'Pantalón', 'Vestido', 'Chaqueta']"
+                class="option"
+                [class.selected]="publicarForm.value.tipo === tipo"
+                (click)="publicarForm.patchValue({ tipo }); tipoAbierto = false">
+              {{ tipo }}
+            </div>
+          </div>
+        </div>
+
 
         <!-- Estado -->
-        <ion-item>
-          <ion-label>Estado</ion-label>
-          <ion-select formControlName="estado">
-            <ion-select-option value="Nuevo">Nuevo</ion-select-option>
-            <ion-select-option value="Como nueva">Como nueva</ion-select-option>
-            <ion-select-option value="Usado">Usado</ion-select-option>
-          </ion-select>
+        <ion-item class="select-fake" lines="full">
+          <ion-label position="stacked">Estado</ion-label>
+          <div class="select-box" (click)="toggleEstado()">
+            <div class="selected-option">
+              {{ publicarForm.value.estado || 'Seleccionar estado' }}
+              <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+          </div>
         </ion-item>
+        <div *ngIf="estadoAbierto" class="options-box-wrapper">
+          <div class="options-box">
+            <div *ngFor="let estado of ['Nuevo', 'Como nueva', 'Usado']"
+                class="option"
+                [class.selected]="publicarForm.value.estado === estado"
+                (click)="publicarForm.patchValue({ estado }); estadoAbierto = false">
+              {{ estado }}
+            </div>
+          </div>
+        </div>
+
+
 
         <!-- Talla -->
-        <ion-item>
-          <ion-label>Talla</ion-label>
-          <ion-select formControlName="talla">
-            <ion-select-option value="S">S</ion-select-option>
-            <ion-select-option value="M">M</ion-select-option>
-            <ion-select-option value="L">L</ion-select-option>
-            <ion-select-option value="XL">XL</ion-select-option>
-          </ion-select>
+        <ion-item class="select-fake" lines="full">
+          <ion-label position="stacked">Talla</ion-label>
+          <div class="select-box" (click)="toggleTalla()">
+            <div class="selected-option">
+              {{ publicarForm.value.talla || 'Seleccionar talla' }}
+              <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+          </div>
         </ion-item>
+        <div *ngIf="tallaAbierta" class="options-box-wrapper">
+          <div class="options-box">
+            <div *ngFor="let talla of ['S', 'M', 'L', 'XL']"
+                class="option"
+                [class.selected]="publicarForm.value.talla === talla"
+                (click)="publicarForm.patchValue({ talla }); tallaAbierta = false">
+              {{ talla }}
+            </div>
+          </div>
+        </div>
+
 
         <!-- Ubicación -->
-        <ion-item>
-          <ion-label>Ubicación</ion-label>
-          <ion-select formControlName="ubicacion">
-            <ion-select-option value="Santiago">Santiago</ion-select-option>
-            <ion-select-option value="Valparaíso">Valparaíso</ion-select-option>
-            <ion-select-option value="Concepción">Concepción</ion-select-option>
-          </ion-select>
+        <ion-item class="select-fake" lines="full">
+          <ion-label position="stacked">Ubicación</ion-label>
+          <div class="select-box" (click)="toggleUbicacion()">
+            <div class="selected-option">
+              {{ publicarForm.value.ubicacion || 'Seleccionar ubicación' }}
+              <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+          </div>
         </ion-item>
+        <div *ngIf="ubicacionAbierta" class="options-box-wrapper">
+          <div class="options-box">
+            <div *ngFor="let ubicacion of ['Santiago', 'Valparaíso', 'Concepción']"
+                class="option"
+                [class.selected]="publicarForm.value.ubicacion === ubicacion"
+                (click)="publicarForm.patchValue({ ubicacion }); ubicacionAbierta = false">
+              {{ ubicacion }}
+            </div>
+          </div>
+        </div>
+
+
 
         <!-- Precio -->
         <ion-item>

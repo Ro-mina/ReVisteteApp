@@ -30,20 +30,12 @@ export class HeaderComponent {
   }
 
   abrirMenuLateral() {
-    this.menu.enable(true, 'menuLateral'); 
+    (document.activeElement as HTMLElement)?.blur();
+    this.menu.enable(true, 'menuLateral');
     this.menu.open('menuLateral');
+    (document.activeElement as HTMLElement)?.blur();
   }
-
-
-  async cerrarSesion() {
-    await Preferences.remove({ key: 'usuario' });
-    await Preferences.remove({ key: 'nombreUsuario' });
-    await Preferences.remove({ key: 'prendas' }); 
-    const { keys } = await Preferences.keys();
-    console.log('Claves guardadas después del logout:', keys);
-
-    this.router.navigate(['/login']);
-  }
+  
   irALogin() {
     this.router.navigate(['/login']);
   }

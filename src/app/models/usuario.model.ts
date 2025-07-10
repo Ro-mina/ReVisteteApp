@@ -21,5 +21,5 @@ export interface UsuarioRespuesta {
   fecha_nacimiento: string;
   genero: string;
   correo: string;
-  token?: string; // opcional
+  token?: string; 
 }

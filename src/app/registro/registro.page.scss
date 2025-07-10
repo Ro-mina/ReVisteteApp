@@ -19,8 +19,23 @@
 }
 
 .boton-personalizado {
-  background-color: #b3eef6; /* Verde, por ejemplo */
+  background-color: #b3eef6; 
   color: black;
   width: 100%;
   margin-top: 20px;
+}
+mat-radio-group {
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 10px 0; 
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #8f8a8a;
+}
+
+.genero-label {
+  color: #666;
+
 }

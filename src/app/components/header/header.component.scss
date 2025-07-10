@@ -1,17 +1,32 @@
+ion-header {
+  padding-top: 30px;
+  background-color: var(--ion-color-dark); 
+  z-index: 10; 
+}
 .logo-img {
   height: 34px; 
   width: auto;
 }
-.bienvenida {  
-  text-align: right;
-  font-weight: bold;
-  font-size: 18px;
-  font-weight: 500;
-  color:  white;
+.bienvenida-text {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  gap: 6px;
+  color: #ffffff;
+  text-shadow: 0 1px 1px rgba(40, 65, 202, 0.9);  
+  padding-right: 12px;
+  white-space: nowrap;
 }
+.bienvenida-icon {
+  font-size: 20px;
+ 
+  color: #ffffff; 
+}
+
 ion-menu[side="bottom"] {
   height: auto;
-  max-height: 300px;
+  max-height: 275px;
   border-radius: 16px 16px 0 0;
   overflow: hidden;
 }

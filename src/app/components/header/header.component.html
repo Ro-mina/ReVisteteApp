@@ -3,7 +3,7 @@
 
     <!-- Botón menú principal solo si hay sesión -->
     <ion-buttons slot="start" *ngIf="usuarioLogeado">
-      <ion-button fill="clear" (click)="abrirMenuLateral()">
+      <ion-button id="menu-toggle" fill="clear" (click)="abrirMenuLateral()">
         <ion-icon name="menu-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -15,12 +15,10 @@
 
     <!-- Usuario logeado -->
     <ion-buttons slot="end" *ngIf="usuarioLogeado; else loginButton">
-      <ion-text color="light" class="bienvenida-text">
+      <ion-text id="bienvenida" color="light" class="bienvenida-text">
+        <ion-icon name="person-circle-outline" class="bienvenida-icon"></ion-icon>
         Bienvenido, {{ nombreUsuario }}
-      </ion-text>
-      <ion-button (click)="cerrarSesion()" fill="clear" color="light">
-        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
-      </ion-button>
+      </ion-text>     
     </ion-buttons>
 
     <!-- Si NO está logeado -->
@@ -30,7 +28,6 @@
           Iniciar sesión
         </ion-button>
       </ion-buttons>
-    </ng-template>
-    
+    </ng-template>    
   </ion-toolbar>
 </ion-header>

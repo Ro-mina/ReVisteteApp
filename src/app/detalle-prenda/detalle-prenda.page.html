@@ -22,28 +22,33 @@
     </ion-card-content>
   </ion-card>
 
-  <div class="comentarios-container">
-    <h2>Si estás interesado ¡Escribe aquí!</h2>
+      <div class="comentarios-container">
+      <h2>¿Interesado? ¡Deja tu mensaje!</h2>
 
-    <div *ngIf="comentarios.length > 0; else sinComentarios">
-      <div class="comentario" *ngFor="let comentario of comentarios">
-        <div class="comentario-header">
-          <strong>{{ comentario.autor }}</strong>
-          <small>{{ comentario.fecha | date: 'short' }}</small>
+      <div *ngIf="comentarios.length > 0; else sinComentarios">
+        <div class="comentario" *ngFor="let comentario of comentarios">
+          <div class="comentario-header">
+            <strong>{{ comentario.autor }}</strong>
+            <small>{{ comentario.fecha | date: 'short' }}</small>
+          </div>
+          <p class="comentario-texto">{{ comentario.texto }}</p>
         </div>
-        <p>{{ comentario.texto }}</p>
+      </div>
+
+      <ng-template #sinComentarios>
+        <p class="sin-comentarios">No hay personas interesadas aún. ¡Esta prenda puede ser tuya!</p>
+      </ng-template>
+
+      <div class="form-comentario">
+        <ion-textarea
+          placeholder="Escribe tu comentario..."
+          [(ngModel)]="nuevoComentario"
+          auto-grow="true"
+          class="input-comentario"
+        ></ion-textarea>
+        <ion-button expand="block" (click)="agregarComentario()" class="btn-comentar">Publicar</ion-button>
       </div>
     </div>
-
-    <ng-template #sinComentarios>
-      <p>No hay personas interesadas aún. ¡Esta prenda puede ser tuya!</p>
-    </ng-template>
-
-    <ion-item lines="none">
-      <ion-input [(ngModel)]="nuevoComentario" placeholder="Escribe al dueño..."></ion-input>
-    </ion-item>
-    <ion-button expand="block" (click)="agregarComentario()" class="btn-comentar">Publicar</ion-button>
-  </div>
 </ion-content>
 
 <ion-footer>

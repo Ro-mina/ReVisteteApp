@@ -31,7 +31,7 @@ export class DetallePrendaPage implements OnInit {
   ) {}
 
     async ngOnInit() {
-      this.usuarioLogeado = await this.dbService.estaLogeado();  // ← espera el valor
+      this.usuarioLogeado = await this.dbService.estaLogeado();  
       console.log('¿Está logeado?:', this.usuarioLogeado);
 
       if (!this.usuarioLogeado) {

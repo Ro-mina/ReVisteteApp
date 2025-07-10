@@ -44,7 +44,7 @@ export class HomePage implements OnInit {
       this.prendaService.getPrendas().subscribe({
         next: async (datos) => {
           this.prendas = datos;
-          this.prendasFiltradas = [...datos]; // 
+          this.prendasFiltradas = [...datos]; 
           await Preferences.set({ key: 'prendas', value: JSON.stringify(datos) });
           console.log(' Prendas cargadas desde API:', datos);
         },
@@ -67,7 +67,6 @@ export class HomePage implements OnInit {
     console.log(' Prendas cargadas localmente:', this.prendas);
   }
 
-
   aplicarFiltros() {
     this.prendasFiltradas = this.prendas.filter(p =>
       (!this.filtros.talla || p.talla === this.filtros.talla) &&
@@ -78,9 +77,8 @@ export class HomePage implements OnInit {
 
     console.log('Filtros activos:', this.filtros);
     console.log('Resultados:', this.prendasFiltradas);
-    this.menu.close('filtrosMenu');
+    this.menu.close('menu-filtros');
   }
-
 
   limpiarFiltros() {
     this.filtros = {
@@ -90,13 +88,15 @@ export class HomePage implements OnInit {
       ubicacion: ''
     };
     this.prendasFiltradas = [...this.prendas];
-    this.menu.close('filtrosMenu');
+    this.menu.close('menu-filtros');
   }
 
   abrirMenu() {
+    (document.activeElement as HTMLElement)?.blur();
     this.menu.open('menu-filtros');
+    (document.activeElement as HTMLElement)?.blur();
   }
-
+    
   cerrarMenu() {
     this.menu.close('menu-filtros');
   }
@@ -118,5 +118,8 @@ export class HomePage implements OnInit {
 
   irAPublicar() {
     this.router.navigate(['/publicar']);
+  }
+  ionViewWillLeave() {
+  (document.activeElement as HTMLElement)?.blur();
   }
 }

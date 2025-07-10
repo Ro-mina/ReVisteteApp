@@ -1,66 +1,80 @@
-<!-- Menú lateral de filtros -->
-<ion-menu menuId="menu-filtros" side="start" contentId="contenidoHome">
+<ion-menu side="end" menuId="menu-filtros" contentId="contenidoHome">
   <ion-header>
     <ion-toolbar color="primary">
-      <ion-title>Filtrar Prendas</ion-title>
-      <ion-buttons slot="end">
-        <ion-button (click)="cerrarMenu()">
-          <ion-icon name="close-outline"></ion-icon>
-        </ion-button>
-      </ion-buttons>
+      <ion-title>Filtros</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content>
-    <!-- Formulario de filtros -->
-    <ion-list lines="full">
-      <ion-item>
-        <ion-label>Talla</ion-label>
-        <ion-select [(ngModel)]="filtros.talla" (ionChange)="aplicarFiltros()">
-          <ion-select-option value="">Todas</ion-select-option>
-          <ion-select-option value="S">S</ion-select-option>
-          <ion-select-option value="M">M</ion-select-option>
-          <ion-select-option value="L">L</ion-select-option>
-          <ion-select-option value="XL">XL</ion-select-option>
-        </ion-select>
-      </ion-item>
 
-      <ion-item>
-        <ion-label>Tipo</ion-label>
-        <ion-select [(ngModel)]="filtros.tipo" (ionChange)="aplicarFiltros()">
-          <ion-select-option value="">Todos</ion-select-option>
-          <ion-select-option value="Polera">Polera</ion-select-option>
-          <ion-select-option value="Pantalón">Pantalón</ion-select-option>
-          <ion-select-option value="Vestido">Vestido</ion-select-option>
-          <ion-select-option value="Chaqueta">Chaqueta</ion-select-option>
-        </ion-select>
-      </ion-item>
+  <ion-content fullscreen="false" class="ion-padding">
 
-      <ion-item>
-        <ion-label>Estado</ion-label>
-        <ion-select [(ngModel)]="filtros.estado" (ionChange)="aplicarFiltros()">
-          <ion-select-option value="">Todos</ion-select-option>
-          <ion-select-option value="Nuevo">Nuevo</ion-select-option>
-          <ion-select-option value="Como nueva">Como nueva</ion-select-option>
-          <ion-select-option value="Usado">Usado</ion-select-option>
-        </ion-select>
-      </ion-item>
+    <!-- TALLA -->
+    <ion-label class="pill-label">Talla</ion-label>
+    <div class="pills">
+      <button *ngFor="let t of ['S', 'M', 'L', 'XL']"
+              [class.selected]="filtros.talla === t"
+              (click)="filtros.talla = t">
+        {{ t }}
+      </button>
+      <button [class.selected]="filtros.talla === ''"
+              (click)="filtros.talla = ''">
+        Todas
+      </button>
+    </div>
 
-      <ion-item>
-        <ion-label>Ubicación</ion-label>
-        <ion-select [(ngModel)]="filtros.ubicacion" (ionChange)="aplicarFiltros()">
-          <ion-select-option value="">Todas</ion-select-option>
-          <ion-select-option value="Santiago">Santiago</ion-select-option>
-          <ion-select-option value="Valparaíso">Valparaíso</ion-select-option>
-          <ion-select-option value="Concepción">Concepción</ion-select-option>
-        </ion-select>
-      </ion-item>
+    <!-- TIPO -->
+    <ion-label class="pill-label">Tipo</ion-label>
+    <div class="pills">
+      <button *ngFor="let tipo of ['Polera', 'Pantalón', 'Vestido', 'Chaqueta']"
+              [class.selected]="filtros.tipo === tipo"
+              (click)="filtros.tipo = tipo">
+        {{ tipo }}
+      </button>
+      <button [class.selected]="filtros.tipo === ''"
+              (click)="filtros.tipo = ''">
+        Todos
+      </button>
+    </div>
 
-      <ion-item lines="none" class="ion-text-center">
-        <ion-button size="small" color="medium" (click)="limpiarFiltros()">Limpiar filtros</ion-button>
-      </ion-item>
-    </ion-list>
+    <!-- ESTADO -->
+    <ion-label class="pill-label">Estado</ion-label>
+    <div class="pills">
+      <button *ngFor="let estado of ['Nuevo','Como nueva', 'Usado']"
+              [class.selected]="filtros.estado === estado"
+              (click)="filtros.estado = estado">
+        {{ estado }}
+      </button>
+      <button [class.selected]="filtros.estado === ''"
+              (click)="filtros.estado = ''">
+        Todos
+      </button>
+    </div>
+
+    <!-- UBICACIÓN -->
+    <ion-label class="pill-label">Ubicación</ion-label>
+    <div class="pills">
+      <button *ngFor="let ubicacion of ['Santiago', 'Valparaíso', 'Concepción']"
+              [class.selected]="filtros.ubicacion === ubicacion"
+              (click)="filtros.ubicacion = ubicacion">
+        {{ ubicacion }}
+      </button>
+      <button [class.selected]="filtros.ubicacion === ''"
+              (click)="filtros.ubicacion = ''">
+        Todas
+      </button>
+    </div>
+
+    <!-- BOTONES -->
+    <ion-button expand="block" color="medium" class="ion-margin-top" (click)="aplicarFiltros()" id="botonAplicarFiltros">
+      Aplicar filtros
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" color="dark" (click)="limpiarFiltros()">
+      Limpiar filtros
+    </ion-button>
+
   </ion-content>
 </ion-menu>
+
 
 <!-- Header -->
 <app-header></app-header>
@@ -83,22 +97,16 @@
     </ion-button>
   </div>
 
-  <!-- Lista de prendas -->
-  <ion-list *ngIf="prendasFiltradas.length > 0; else sinResultados">
-    <ion-card class="card-prenda" *ngFor="let prenda of prendasFiltradas" (click)="verDetalle(prenda.id!)" button>
-      <img [src]="prenda.imagen" />
-      <ion-card-header>
-        <ion-card-title>{{ prenda.titulo }}</ion-card-title>
-        <ion-card-subtitle>{{ prenda.tipo }} - Talla {{ prenda.talla }}</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        Estado: {{ prenda.estado }} <br />
-        Ubicación: {{ prenda.ubicacion }} <br />
-        Precio: ${{ prenda.precio }} <br />
-        <small><strong>Publicado por:</strong> {{ prenda.publicadoPor }}</small>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+  <!-- Grilla de prendas -->
+  <div class="grid-prendas" *ngIf="prendasFiltradas.length > 0; else sinResultados">
+    <div class="item-prenda" *ngFor="let prenda of prendasFiltradas" (click)="verDetalle(prenda.id!)">
+      <img [src]="prenda.imagen" alt="Imagen de {{ prenda.titulo }}" />
+      <div class="info-prenda">
+        <h3>{{ prenda.titulo }}</h3>
+        <p>${{ prenda.precio }}</p>
+      </div>
+    </div>
+  </div>
 
   <!-- Sin resultados -->
   <ng-template #sinResultados>
