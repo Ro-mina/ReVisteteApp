@@ -77,7 +77,8 @@ export class HomePage implements OnInit {
 
     console.log('Filtros activos:', this.filtros);
     console.log('Resultados:', this.prendasFiltradas);
-    this.menu.close('menu-filtros');
+    setTimeout(() => this.menu.close('menu-filtros'), 100);
+    console.log('cerrando menú')
   }
 
   limpiarFiltros() {
@@ -88,7 +89,7 @@ export class HomePage implements OnInit {
       ubicacion: ''
     };
     this.prendasFiltradas = [...this.prendas];
-    this.menu.close('menu-filtros');
+    setTimeout(() => this.menu.close('menu-filtros'), 100);
   }
 
   abrirMenu() {

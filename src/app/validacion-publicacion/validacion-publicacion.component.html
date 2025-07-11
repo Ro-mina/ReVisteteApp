@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Validación de Publicación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="formulario">
+    <ion-list>
+
+      <ion-item>
+        <ion-label position="stacked">Nombre de la App</ion-label>
+        <ion-input formControlName="nombreApp" readonly></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">App ID</ion-label>
+        <ion-input formControlName="appId" readonly></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Versión</ion-label>
+        <ion-input formControlName="version" readonly></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Correo del Desarrollador</ion-label>
+        <ion-input formControlName="correo" readonly></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">País</ion-label>
+        <ion-input formControlName="pais" readonly></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">SDK Mínimo</ion-label>
+        <ion-input formControlName="sdkMin" readonly></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">SDK Objetivo</ion-label>
+        <ion-input formControlName="sdkTarget" readonly></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>¿APK generado?</ion-label>
+        <ion-toggle color= "medium" [checked]="formulario.get('tieneAPK')?.value" disabled></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>¿AAB generado?</ion-label>
+        <ion-toggle color= "medium" [checked]="formulario.get('tieneAAB')?.value" disabled></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>¿Aplicación firmada?</ion-label>
+        <ion-toggle color= "medium" [checked]="formulario.get('firmada')?.value" disabled></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>¿Pruebas unitarias con Jasmine?</ion-label>
+        <ion-toggle color= "medium" [checked]="formulario.get('pruebasUnitarias')?.value" disabled></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>¿Pruebas E2E realizadas?</ion-label>
+        <ion-toggle color= "medium" [checked]="formulario.get('pruebasE2E')?.value" disabled></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Plataformas objetivo</ion-label>
+        <ion-input formControlName="plataforma" readonly></ion-input>
+      </ion-item>
+
+    </ion-list>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="dark">
+    <ion-title size="small" class="ion-text-center">
+      Copyright © ReVístete 2025
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>
+
+

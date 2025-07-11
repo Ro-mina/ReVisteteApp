@@ -1,3 +1,6 @@
+ion-content {
+  --padding-bottom: 200px; 
+}
 .card-prenda {
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -126,7 +129,7 @@
 
   .btn-comentar {
     border-radius: 12px;
-    background-color: #b3eef6;
+    background-color: #ffffff;
     color: #1a1a1a;
     font-weight: 600;
     font-size: 1rem;

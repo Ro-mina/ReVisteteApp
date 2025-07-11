@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController, Platform } from '@ionic/angular';
 import { Preferences } from '@capacitor/preferences';
-import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-root',
@@ -14,27 +13,30 @@ export class AppComponent {
   constructor(
     private router: Router,
     private menu: MenuController,
-    private platform: Platform 
+    private platform: Platform
   ) {
-    this.initializeApp(); 
+    this.initializeApp();
   }
 
-  // Método para configurar la barra de estado
-  async initializeApp() {
-    await this.platform.ready();
+  initializeApp() {
+    this.platform.ready().then(() => {
+      if (this.platform.is('android')) {
+        console.log(' Ejecutando en Android');
+        
+        this.menu.swipeGesture(true, 'menuLateral');
+      }
 
-    try {
-      // Evita que la status bar tape tu contenido
-      await StatusBar.setOverlaysWebView({ overlay: false });
+      if (this.platform.is('ios')) {
+        console.log(' Ejecutando en iOS');
+        
+        this.menu.swipeGesture(false, 'menuLateral');
+      }
 
-      // Cambia el color de fondo de la status bar
-      await StatusBar.setBackgroundColor({ color: '#ffffff' });
-
-      // Establece el estilo del texto (claro u oscuro)
-      await StatusBar.setStyle({ style: Style.Dark });
-    } catch (error) {
-      console.log('Error configurando StatusBar:', error);
-    }
+      if (this.platform.is('mobileweb')) {
+        console.log(' Ejecutando en Web Móvil');
+        
+      }
+    });
   }
 
   irA(ruta: string) {
@@ -49,10 +51,12 @@ export class AppComponent {
     await Preferences.remove({ key: 'nombreUsuario' });
     await Preferences.remove({ key: 'prendas' });
 
+    await this.menu.enable(false, 'menuLateral');
+    await this.menu.close('menuLateral');
+
     const { keys } = await Preferences.keys();
     console.log('Claves guardadas después del logout:', keys);
 
     this.router.navigate(['/login']);
-    this.menu.close();
   }
 }

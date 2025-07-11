@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { ValidacionPublicacionComponent } from './validacion-publicacion/validacion-publicacion.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import('src/app/mi-cuenta/mi-cuenta.module').then(m => m.MiCuentaPageModule)
     
+  },
+  {
+  path: 'validacion-publicacion',
+    component: ValidacionPublicacionComponent
   },
 ];
 
