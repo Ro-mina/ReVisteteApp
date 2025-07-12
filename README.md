@@ -1,69 +1,92 @@
-📱 ReVístete App – Versión 2.0
+# 📱 ReVístete App – Versión 3.0
 
-ReVístete es una aplicación móvil híbrida desarrollada en Ionic y Angular, enfocada en la economía circular, que facilita la compra, venta e intercambio de prendas usadas en excelente estado. Su objetivo es fomentar la moda sustentable mediante una plataforma funcional, accesible y segura.
-
----
-
-🚩 Problemática detectada
-
-Muchas personas tienen ropa en buen estado que ya no utilizan, mientras otras buscan alternativas económicas y sostenibles para renovar su guardarropa. Actualmente, no todas cuentan con una plataforma confiable, accesible y fácil para resolver esta necesidad.
+**ReVístete** es una aplicación híbrida desarrollada en **Ionic + Angular**, orientada a fomentar la economía circular mediante la compraventa de ropa usada. Esta nueva versión consolida su funcionamiento multiplataforma y lista para publicación en Android, incluyendo mejoras en experiencia, seguridad, y validación de calidad.
 
 ---
 
-💡 Solución propuesta
+## 🚩 Problemática detectada
 
-La aplicación móvil ReVístete conecta a los usuarios de forma eficiente, permitiéndoles publicar, buscar y adquirir prendas en buen estado. Esta nueva versión mejora significativamente la seguridad, la experiencia de uso, y la capacidad de funcionar sin conexión.
-
----
-
-✨ Ventajas de la versión 2.0:
-
-- Plataforma intuitiva, con navegación protegida mediante Route Guards.
-- Funciona offline gracias a persistencia de datos con SQLite.
-- Promueve el consumo consciente y sostenible.
-- Permite subir fotos desde la cámara del dispositivo (Capacitor Camera).
-- Diseño atractivo, validaciones visuales y animaciones que enriquecen la experiencia.
-
-⚠️ Desafíos:
-
-- Requiere una comunidad activa para mantener contenido actualizado.
-- Necesita moderación continua para asegurar la calidad del contenido.
+Muchas personas acumulan prendas en buen estado que ya no usan, mientras otras buscan opciones más económicas y sustentables para renovar su ropa. Falta una plataforma móvil, confiable y fácil de usar que resuelva esta necesidad de forma eficiente.
 
 ---
 
-🎨 Interfaces y componentes utilizados
+## 💡 Solución propuesta
 
-- **Ionic Framework:** `ion-card`, `ion-button`, `ion-select`, `ion-menu`, `ion-header`, `ion-footer`.
-- **Angular Material:** Formularios con `mat-form-field`, `mat-select`, `mat-datepicker`.
-- **Reactive Forms:** Validaciones robustas y control avanzado de formularios.
-- **Plugins:** `@capacitor/camera`, `@capacitor/preferences`, `SQLite`, `ngx-sqlite-porter`.
+Una app móvil accesible que permite publicar, buscar y adquirir ropa usada. ReVístete crea una comunidad de moda consciente que promueve el intercambio responsable.
 
 ---
 
-⚙️ Funciones principales desarrolladas
+## ✨ Novedades en la versión 3.0
 
-- 🔐 **Autenticación persistente:** Registro e inicio de sesión conectados a API REST (FastAPI), con almacenamiento local del usuario.
-- 🧥 **Publicación de prendas con cámara:** Toma directa de fotos con el celular y publicación inmediata.
-- 🔍 **Filtros dinámicos:** Por tipo de prenda, estado, talla y ubicación.
-- 💬 **Sistema de comentarios:** Vinculados a cada prenda, con persistencia y sincronización.
-- 🔄 **Visualización offline:** Si no hay conexión, la app muestra los datos guardados previamente con SQLite.
-- ⚠️ **Manejo de errores HTTP:** Incluyendo fallback en errores como 404 o pérdida de red.
-- 🎯 **Navegación optimizada:** Rutas protegidas, fluidez en la experiencia y estructura modular.
+- ✔️ **Generación de APK y AAB firmados para Android**
+- ✔️ **Formulario de validación para publicación**
+- ✔️ **Firma con certificado digital (`.jks`) mediante Keytool**
+- ✔️ **Configuración multiplataforma (Android, iOS, WebMobile)**
+- ✔️ **Pruebas unitarias con Jasmine y E2E con Cypress**
+- ✔️ **Validación visual de checklist previo a publicación**
 
 ---
 
-🛠️ Desarrollado con
+## 🎨 Interfaces y componentes utilizados
+
+- **Ionic Framework:** `ion-toggle`, `ion-input`, `ion-menu`, `ion-card`
+- **Angular Material:** `mat-form-field`, `mat-radio-button`, `mat-button`
+- **Formularios reactivos:** Validación completa en `ReactiveForms`
+- **Capacitor Plugins:** `Camera`, `Preferences`
+- **SQLite + ngx-sqlite-porter:** Para persistencia offline
+
+---
+
+## 🧩 Funcionalidades implementadas
+
+- 🔐 **Registro/login persistente** conectado a API REST con SQLite como respaldo offline.
+- 🧥 **Publicación de prendas:** con fotos desde la cámara y detalles como talla, estado, precio.
+- 💬 **Comentarios por prenda** visibles para todos los usuarios autenticados.
+- 🎛️ **Filtros por categoría, género, talla y estado.**
+- ⚠️ **Manejo de errores HTTP y offline.**
+- 📝 **Formulario de validación** con verificación visual de requisitos técnicos antes de subir la app.
+
+---
+
+## 🧪 Pruebas
+
+- ✅ **Pruebas Unitarias (Jasmine + Karma):**
+  - Validación de formularios, lógica de componentes.
+- ✅ **Pruebas E2E (Protractor):**
+  - Flujo completo desde login → publicación → comentarios → logout.
+- Todas las pruebas fueron exitosas y están documentadas.
+
+---
+
+## 🚀 Publicación Android (sin publicar)
+
+- 🔐 Certificado generado con `keytool` (`revistete-key.jks`)
+- ✅ APK alineado y firmado (`ReVistete.apk`)
+- ✅ Bundle AAB generado y firmado (`ReVistete.aab`)
+- 📄 Configuración detallada en `capacitor.config.ts` y `config.xml`
+- 🧾 Página `/validacion-publicacion` creada para verificación previa a publicación
+
+---
+
+## 🛠️ Tecnologías utilizadas
 
 - Ionic Framework  
 - Angular  
-- Angular Material  
+- Capacitor  
 - TypeScript  
 - SQLite  
-- FastAPI (Backend)  
-- HTML & SCSS  
+- FastAPI  
+- Jasmine / Cypress  
+- HTML + SCSS
 
 ---
 
-✏️ Autor  
-[Ro-mina]  
-¡Gracias por visitar mi proyecto! ✨
+## ✏️ Autora
+
+**Romina Torres** ✨
+`ro.torresg@duocuc.cl`  
+
+
+---
+
+¡Gracias por visitar mi proyecto!  
