@@ -52,7 +52,7 @@ Una app móvil accesible que permite publicar, buscar y adquirir ropa usada. ReV
 
 - ✅ **Pruebas Unitarias (Jasmine + Karma):**
   - Validación de formularios, lógica de componentes.
-- ✅ **Pruebas E2E (Protractor):**
+- ✅ **Pruebas E2E (Cypress):**
   - Flujo completo desde login → publicación → comentarios → logout.
 - Todas las pruebas fueron exitosas y están documentadas.
 
