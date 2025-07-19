@@ -5,8 +5,14 @@
 
   <name>ReVístete</name>
   <description>App de compraventa de ropa</description>
-  <author email="ro.torresg@duocuc.cl">Renato</author>
+  <author email="ro.torresg@duocuc.cl">Romina Torres</author>
 
+  <!-- Preferencias generales -->
   <preference name="android-minSdkVersion" value="22" />
   <preference name="android-targetSdkVersion" value="34" />
+
+  <!-- Versión interna de Android -->
+  <platform name="android">
+    <preference name="android-versionCode" value="1" />
+  </platform>
 </widget>

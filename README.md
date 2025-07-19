@@ -81,12 +81,46 @@ Una app móvil accesible que permite publicar, buscar y adquirir ropa usada. ReV
 
 ---
 
-## ✏️ Autora
+## 🧾 Versión y Firma Android
 
-**Romina Torres** ✨
-`ro.torresg@duocuc.cl`  
+```xml
+<!-- Fragmento relevante de config.xml -->
+<widget id="com.revistete.app" version="1.0.0">
+  <platform name="android">
+    <preference name="android-versionCode" value="1" />
+  </platform>
+</widget>
+```
 
+- **versionName:** `1.0.0`   
+- **versionCode:** `1`
 
 ---
 
-¡Gracias por visitar mi proyecto!  
+## 🔐 Firma y Keystore
+
+- **Archivo Keystore:** `revistete-key.jks`  
+- **Alias:** `revistete`
+
+### ✍️ Firma con jarsigner:
+
+```bash
+# Firmar APK manualmente
+jarsigner -verbose -keystore revistete-key.jks -signedjar ReVistete-signed.apk ReVistete-unaligned.apk revistete
+
+# Verificar firma
+jarsigner -verify -verbose -certs ReVistete-signed.apk
+```
+
+> ⚠️ **Importante:** este keystore debe mantenerse seguro. Todas las futuras versiones de la app **deben** ser firmadas con el mismo archivo `.jks`.
+
+---
+
+## ✏️ Autora
+
+**Romina Torres** ✨  
+`ro.torresg@duocuc.cl`
+
+---
+
+¡Gracias por visitar mi proyecto!
